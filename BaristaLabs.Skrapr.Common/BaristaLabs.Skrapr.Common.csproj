@@ -30,6 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK">
+      <HintPath>..\packages\AWSSDK.2.2.4.0\lib\net45\AWSSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,7 +46,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\CronScheduleConverter.cs" />
+    <Compile Include="DomainModel\Authentication.cs" />
+    <Compile Include="DomainModel\AuthenticationCollection.cs" />
+    <Compile Include="DomainModel\CronSchedule.cs" />
+    <Compile Include="DomainModel\Project.cs" />
+    <Compile Include="DomainModel\Schedule.cs" />
+    <Compile Include="DomainModel\ScheduleCollection.cs" />
+    <Compile Include="DomainModel\Skrapr.cs" />
+    <Compile Include="DomainModel\Target.cs" />
+    <Compile Include="DomainModel\TargetCollection.cs" />
+    <Compile Include="DomainModel\TargetProperty.cs" />
+    <Compile Include="DomainModel\TargetPropertyCollection.cs" />
+    <Compile Include="DomainModel\TargetPropertySkrapr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DomainModel\TargetPattern.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
