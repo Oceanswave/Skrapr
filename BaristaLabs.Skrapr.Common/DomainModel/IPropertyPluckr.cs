@@ -1,7 +1,7 @@
-﻿namespace BaristaLabs.Skrapr.Common
+﻿namespace BaristaLabs.Skrapr.Common.DomainModel
 {
     using System.ComponentModel;
-    using BaristaLabs.Skrapr.Common.DomainModel;
+    using BaristaLabs.Skrapr.Common.Converters;
     using Newtonsoft.Json;
 
     /// <summary>

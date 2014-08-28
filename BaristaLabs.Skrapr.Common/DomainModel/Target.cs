@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using BaristaLabs.Skrapr.Common.Converters;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -114,7 +115,7 @@
         /// <summary>
         /// Gets or sets the collection of properties.
         /// </summary>
-        [JsonProperty("properties", Required = Required.Always)]
+        [JsonProperty("properties", Required = Required.Always, ItemConverterType = typeof(PropertyPluckrConverter))]
         public IDictionary<string, IPropertyPluckr> Properties
         {
             get;
