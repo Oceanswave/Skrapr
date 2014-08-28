@@ -1,6 +1,7 @@
 ﻿namespace BaristaLabs.Skrapr.Common.DomainModel
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -50,8 +51,9 @@
         /// <summary>
         /// Gets or sets a value that indicates if the target is disabled.
         /// </summary>
-        [JsonProperty("disabled")]
-        public bool? Disabled
+        [JsonProperty("disabled", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(false)]
+        public bool Disabled
         {
             get;
             set;
@@ -76,7 +78,8 @@
         /// <remarks>
         /// If this value is true, the response body will be stored as a blob
         /// </remarks>
-        [JsonProperty("isBlob")]
+        [JsonProperty("isBlob", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(false)]
         public bool IsBlob
         {
             get;
@@ -86,7 +89,8 @@
         /// <summary>
         /// Gets or sets a value that indicates if jQuery should be injected on the page, if it doesn't already exist. (Optional - Default is that jQuery is not required)
         /// </summary>
-        [JsonProperty("requireJQuery")]
+        [JsonProperty("requireJQuery", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(false)]
         public bool RequireJQuery
         {
             get;
@@ -96,7 +100,11 @@
         /// <summary>
         /// Gets or sets a value that indicates a number of additional dependencies that should be injected into the page. (Optional - Default is no scripts will be injected)
         /// </summary>
-        [JsonProperty("scriptDependencies")]
+        /// <remarks>
+        /// Absolute urls to publically available resources are required.
+        /// </remarks>
+        [JsonProperty("scriptDependencies", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(null)]
         public IList<string> AdditionalScriptDependencies
         {
             get;
@@ -107,7 +115,7 @@
         /// Gets or sets the collection of properties.
         /// </summary>
         [JsonProperty("properties", Required = Required.Always)]
-        public TargetPropertyCollection Properties
+        public IDictionary<string, IPropertyPluckr> Properties
         {
             get;
             set;

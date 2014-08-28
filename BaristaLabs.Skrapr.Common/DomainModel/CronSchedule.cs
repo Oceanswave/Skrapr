@@ -2,21 +2,18 @@
 {
     using BaristaLabs.Skrapr.Common.Converters;
     using Newtonsoft.Json;
+    using Quartz;
 
     /// <summary>
-    /// Represents a CronExpression. See http://quartz-scheduler.org/api/2.2.0/org/quartz/CronExpression.html
+    /// Represents a schedule defined as a CronExpression. See http://quartz-scheduler.org/api/2.2.0/org/quartz/CronExpression.html
     /// </summary>
     [JsonConverter(typeof(CronScheduleConverter))]
     public class CronSchedule : Schedule
     {
-        public CronSchedule()
+        private readonly CronExpression m_cronExpression;
+        public CronSchedule(string cronExpression)
         {
-            Seconds = "0";
-            Minutes = "0";
-            Hours = "0";
-            DayOfMonth = "*";
-            Month = "*";
-            DayOfWeek = "?";
+            m_cronExpression = new CronExpression(cronExpression);
         }
 
         public override string Name
@@ -24,46 +21,15 @@
             get { return "cron"; }
         }
 
-        public string Seconds
+        [JsonIgnore]
+        public CronExpression Expression
         {
-            get;
-            set;
+            get { return m_cronExpression; }
         }
 
-        public string Minutes
+        public override string ToString()
         {
-            get;
-            set;
-        }
-
-        public string Hours
-        {
-            get;
-            set;
-        }
-
-        public string DayOfMonth
-        {
-            get;
-            set;
-        }
-
-        public string Month
-        {
-            get;
-            set;
-        }
-
-        public string DayOfWeek
-        {
-            get;
-            set;
-        }
-
-        public string Year
-        {
-            get;
-            set;
+            return m_cronExpression.ToString();
         }
     }
 }

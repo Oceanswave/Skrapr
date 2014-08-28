@@ -10,6 +10,9 @@
     /// </remarks>
     public class TargetPattern
     {
+        /// <summary>
+        /// Gets or sets the url pattern to use. This is a regular expression.
+        /// </summary>
         [JsonProperty("url")]
         public string Url
         {
@@ -17,6 +20,9 @@
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the mime type to use. This is a regular expression.
+        /// </summary>
         [JsonProperty("mimeType")]
         public string MimeType
         {

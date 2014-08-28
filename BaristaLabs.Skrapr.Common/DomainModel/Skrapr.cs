@@ -1,6 +1,7 @@
 ﻿namespace BaristaLabs.Skrapr.Common.DomainModel
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Security.Authentication;
     using Newtonsoft.Json;
 
@@ -11,7 +12,7 @@
     {
         public Skrapr()
         {
-            this.TypePropertyName = "_type";
+            TypePropertyName = "_type";
         }
 
         /// <summary>
@@ -37,7 +38,8 @@
         /// <summary>
         /// Indicates the property name of the field that indicates the type. Defaults to '_type'
         /// </summary>
-        [JsonProperty("typePropertyName")]
+        [JsonProperty("typePropertyName", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue("_type")]
         public string TypePropertyName
         {
             get;
@@ -78,7 +80,8 @@
         /// Gets or sets a value that indicates the maximum number of results to retrieve.
         /// </summary>
         /// <remarks>Once this value is reached, the skrapr will stop.</remarks>
-        [JsonProperty("maxResults")]
+        [JsonProperty("maxResults", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(null)]
         public int? MaxResults
         {
             get;

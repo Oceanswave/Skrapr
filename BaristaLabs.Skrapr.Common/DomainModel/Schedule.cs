@@ -5,7 +5,7 @@
     public abstract class Schedule
     {
         /// <summary>
-        /// Name of the schedule
+        /// Gets the of the schedule
         /// </summary>
         [JsonProperty("name")]
         public abstract string Name

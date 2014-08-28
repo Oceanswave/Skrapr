@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{00926A84
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6EDA2B08-92BB-4B2A-A828-2A992CA199BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaristaLabs.Skrapr.Common.Tests", "BaristaLabs.Skrapr.Common.Tests\BaristaLabs.Skrapr.Common.Tests.csproj", "{0E09A97A-A81E-469F-81F0-69B3BA9C55E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{ADEEF72C-E6CC-437A-82B1-E372715A5871}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADEEF72C-E6CC-437A-82B1-E372715A5871}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADEEF72C-E6CC-437A-82B1-E372715A5871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E09A97A-A81E-469F-81F0-69B3BA9C55E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E09A97A-A81E-469F-81F0-69B3BA9C55E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E09A97A-A81E-469F-81F0-69B3BA9C55E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E09A97A-A81E-469F-81F0-69B3BA9C55E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,5 +48,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E487414C-66D3-4AA4-830B-8022BEABE2D9} = {D29E87DC-6002-437B-8722-C626265BE8D6}
 		{ADEEF72C-E6CC-437A-82B1-E372715A5871} = {0BCFFE03-F43E-452C-BE9A-73F517E46FB9}
+		{0E09A97A-A81E-469F-81F0-69B3BA9C55E5} = {6EDA2B08-92BB-4B2A-A828-2A992CA199BA}
 	EndGlobalSection
 EndGlobal
