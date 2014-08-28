@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using BaristaLabs.Skrapr.Common.DomainModel;
     using BaristaLabs.Skrapr.Common.Tests.Properties;
+    using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Newtonsoft.Json;
 
@@ -65,7 +66,7 @@
             var json = Resources.ExampleTarget01;
             var result = JsonConvert.DeserializeObject<Target>(json);
 
-            
+            result.ShouldBeEquivalentTo(ExampleTarget01); 
         }
 
         [TestMethod]
