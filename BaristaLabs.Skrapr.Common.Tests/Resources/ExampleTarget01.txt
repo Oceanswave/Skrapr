@@ -1,6 +1,6 @@
 {
-  "name": "Get the Weather",
-  "description": "Crawls the weather data.",
+  "name": "Front Page Weather",
+  "description": "Gets the weather information from the front page.",
   "pattern": {
     "url": "http://www.weather.com/weather/today/\\d{5}",
     "mimeType": "text/html"
@@ -8,6 +8,20 @@
   "type": "Weather",
   "requireJQuery": true,
   "properties": {
+    "source": {
+      "type": "const",
+      "value": "Weather.com"
+    },
+    "zipCode": {
+      "type": "lastPathSegment",
+      "valueType": "PrimaryKey"
+    },
+    "url": {
+      "type": "url"
+    },
+    "retrievedAt": {
+      "type": "nowUtc"
+    },
     "rightNow": {
       "type": "cssText",
       "selector": "ul.nav-list li a",

@@ -2,23 +2,50 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Security.Authentication;
+    using BaristaLabs.Skrapr.Common.Converters;
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Represents a Skrapr -- a collection of rules that scrape a site.
+    /// Represents a Web Skrapr -- a collection of rules that scrape web pages.
     /// </summary>
-    public class Skrapr
+    public class WebSkrapr : SkraprBase
     {
-        public Skrapr()
+        public WebSkrapr()
         {
             TypePropertyName = "_type";
         }
 
+        public override string Type
+        {
+            get { return "web"; }
+        }
+
         /// <summary>
-        /// Gets or sets the user agent to use when skraping. Defaults to ...
+        /// Gets or sets the name of the skrapr.
+        /// </summary>
+        [JsonProperty("name", Required = Required.Always)]
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the description of the Skrapr.
+        /// </summary>
+        [JsonProperty("description", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(null)]
+        public string Description
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the user agent to use when skraping. Defaults to Chrome > 37
         /// </summary>
         [JsonProperty("userAgent")]
+        [DefaultValue("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.102 Safari/537.36")]
         public string UserAgent
         {
             get;
@@ -28,7 +55,8 @@
         /// <summary>
         /// Gets or sets whether the skrapr is incremental (???)
         /// </summary>
-        [JsonProperty("incremental")]
+        [JsonProperty("incremental", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(false)]
         public bool Incremental
         {
             get;
@@ -59,7 +87,8 @@
         /// <summary>
         /// Gets or sets a collection of white-listed urls for crawling.
         /// </summary>
-        [JsonProperty("includeFilter")]
+        [JsonProperty("includeFilter", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(null)]
         public IList<string> IncludeFilter
         {
             get;
@@ -69,7 +98,8 @@
         /// <summary>
         /// Gets or sets a collection of black-listed urls for crawling.
         /// </summary>
-        [JsonProperty("excludeFilter")]
+        [JsonProperty("excludeFilter", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(null)]
         public IList<string> ExcludeFilter
         {
             get;
@@ -97,7 +127,7 @@
         /// <summary>
         /// Gets or sets a value that indicates if the site's robots.txt is ignored.
         /// </summary>
-        [JsonProperty("IgnoreRobots")]
+        [JsonProperty("ignoreRobots")]
         public bool IgnoreRobots
         {
             get;
@@ -105,24 +135,35 @@
         }
 
         /// <summary>
-        /// Gets or sets a collection of authentications which will be used
+        /// Gets or sets a collection of authenticators which will be used
         /// </summary>
-        [JsonProperty("authentications")]
-        public IList<AuthenticationException> Authentications
+        [JsonProperty("authenticators", ItemConverterType = typeof(AuthenticatorConverter), DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(null)]
+        public IList<IAuthenticator> Authenticators
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets or sets a collection of skrapr targets.
+        /// </summary>
+        /// <remarks>
+        /// A target is a definition of ...
+        /// </remarks>
         [JsonProperty("targets")]
-        public TargetCollection Targets
+        public IList<Target> Targets
         {
             get;
             set;
         }
 
-        [JsonProperty("schedule")]
-        public IList<Schedule> Schedule
+        /// <summary>
+        /// Gets or sets the collection of schedules. If no schedules are defined, the Skrapr will only execute manually.
+        /// </summary>
+        [JsonProperty("schedule", ItemConverterType = typeof(ScheduleConverter), DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(null)]
+        public IList<ISchedule> Schedule
         {
             get;
             set;

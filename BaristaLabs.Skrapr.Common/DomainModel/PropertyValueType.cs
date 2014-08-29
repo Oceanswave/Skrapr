@@ -22,6 +22,13 @@
         [JsonProperty("float")]
         Float,
 
+
+        /// <summary>
+        /// Indicates that the property value is a date.
+        /// </summary>
+        [JsonProperty("date")]
+        Date,
+
         /// <summary>
         /// Indicates that the property value is a base64 encoded byte array.
         /// </summary>

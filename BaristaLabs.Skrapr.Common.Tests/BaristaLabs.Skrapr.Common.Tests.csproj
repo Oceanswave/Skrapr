@@ -86,6 +86,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\ExampleSkrapr01.txt" />
+    <None Include="Resources\ExampleProject01.txt" />
     <Content Include="Resources\ExampleTarget01.txt" />
   </ItemGroup>
   <Choose>

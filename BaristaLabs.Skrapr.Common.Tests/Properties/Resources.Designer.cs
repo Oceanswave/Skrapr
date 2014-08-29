@@ -62,8 +62,62 @@ namespace BaristaLabs.Skrapr.Common.Tests.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;name&quot;: &quot;Get the Weather&quot;,
-        ///  &quot;description&quot;: &quot;Crawls the weather data.&quot;,
+        ///  &quot;name&quot;: &quot;Weather Comparison&quot;,
+        ///  &quot;description&quot;: &quot;Skrapes numerous weather sources to compare the results.&quot;,
+        ///  &quot;skraprs&quot;: [
+        ///    {
+        ///      &quot;type&quot;: &quot;web&quot;,
+        ///      &quot;name&quot;: &quot;Weather.com&quot;,
+        ///      &quot;description&quot;: &quot;Gets weather information from weather.com&quot;,
+        ///      &quot;userAgent&quot;: &quot;Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko&quot;,
+        ///      &quot;startUrls&quot;: [
+        ///        &quot;http://www.weather.com/&quot;
+        ///      ],
+        ///      &quot;includeFilter&quot;: [
+        ///        &quot;http://www.weather.com/.*&quot;
+        ///      ],
+        ///      &quot;ignoreRobots&quot;: true,
+        ///   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ExampleProject01 {
+            get {
+                return ResourceManager.GetString("ExampleProject01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;type&quot;: &quot;web&quot;,
+        ///  &quot;name&quot;: &quot;Weather.com&quot;,
+        ///  &quot;description&quot;: &quot;Gets weather information from weather.com&quot;,
+        ///  &quot;userAgent&quot;: &quot;Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko&quot;,
+        ///  &quot;startUrls&quot;: [
+        ///    &quot;http://www.weather.com/&quot;
+        ///  ],
+        ///  &quot;includeFilter&quot;: [
+        ///    &quot;http://www.weather.com/.*&quot;
+        ///  ],
+        ///  &quot;ignoreRobots&quot;: true,
+        ///  &quot;authenticators&quot;: [
+        ///    {
+        ///      &quot;type&quot;: &quot;ntlm&quot;,
+        ///      &quot;username&quot;: &quot;testuser&quot;,
+        ///      &quot;password&quot;: &quot;password&quot;
+        ///    },
+        ///    {
+        ///      &quot;type&quot;: &quot;form&quot;,
+        ///      &quot;requireJQuery&quot;: true, [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ExampleSkrapr01 {
+            get {
+                return ResourceManager.GetString("ExampleSkrapr01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;name&quot;: &quot;Front Page Weather&quot;,
+        ///  &quot;description&quot;: &quot;Gets the weather information from the front page.&quot;,
         ///  &quot;pattern&quot;: {
         ///    &quot;url&quot;: &quot;http://www.weather.com/weather/today/\\d{5}&quot;,
         ///    &quot;mimeType&quot;: &quot;text/html&quot;
@@ -71,15 +125,18 @@ namespace BaristaLabs.Skrapr.Common.Tests.Properties {
         ///  &quot;type&quot;: &quot;Weather&quot;,
         ///  &quot;requireJQuery&quot;: true,
         ///  &quot;properties&quot;: {
-        ///    &quot;rightNow&quot;: {
-        ///      &quot;type&quot;: &quot;cssText&quot;,
-        ///      &quot;selector&quot;: &quot;ul.nav-list li a&quot;,
-        ///      &quot;isArray&quot;: true
+        ///    &quot;source&quot;: {
+        ///      &quot;type&quot;: &quot;const&quot;,
+        ///      &quot;value&quot;: &quot;Weather.com&quot;
         ///    },
-        ///    &quot;earlierToday&quot;: {
-        ///      &quot;type&quot;: &quot;script&quot;,
-        ///      &quot;script&quot;: &quot;jQuery(&apos;ul.nav-list li a&apos;).text();&quot;,
-        ///      &quot;transform&quot;: &quot;function(result) { [rest of string was truncated]&quot;;.
+        ///    &quot;zipCode&quot;: {
+        ///      &quot;type&quot;: &quot;lastPathSegment&quot;,
+        ///      &quot;valueType&quot;: &quot;PrimaryKey&quot;
+        ///    },
+        ///    &quot;url&quot;: {
+        ///      &quot;type&quot;: &quot;url&quot;
+        ///    },
+        ///    &quot;retrieve [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ExampleTarget01 {
             get {

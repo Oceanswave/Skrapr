@@ -52,17 +52,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\CronScheduleConverter.cs" />
+    <Compile Include="Converters\AuthenticatorConverter.cs" />
     <Compile Include="Converters\PropertyPluckrConverter.cs" />
-    <Compile Include="DomainModel\Authentication.cs" />
-    <Compile Include="DomainModel\AuthenticationCollection.cs" />
-    <Compile Include="DomainModel\CronSchedule.cs" />
+    <Compile Include="Converters\SkraprConverter.cs" />
+    <Compile Include="Converters\ScheduleConverter.cs" />
+    <Compile Include="DomainModel\Authenticator.cs" />
+    <Compile Include="DomainModel\IAuthenticator.cs" />
+    <Compile Include="DomainModel\ISchedule.cs" />
+    <Compile Include="DomainModel\ISkrapr.cs" />
     <Compile Include="DomainModel\Project.cs" />
     <Compile Include="DomainModel\Schedule.cs" />
-    <Compile Include="DomainModel\ScheduleCollection.cs" />
-    <Compile Include="DomainModel\Skrapr.cs" />
+    <Compile Include="DomainModel\SkraprBase.cs" />
+    <Compile Include="DomainModel\WebSkrapr.cs" />
     <Compile Include="DomainModel\Target.cs" />
-    <Compile Include="DomainModel\TargetCollection.cs" />
     <Compile Include="DomainModel\PropertyPluckr.cs" />
     <Compile Include="DomainModel\PropertyValueType.cs" />
     <Compile Include="DomainModel\IPropertyPluckr.cs" />

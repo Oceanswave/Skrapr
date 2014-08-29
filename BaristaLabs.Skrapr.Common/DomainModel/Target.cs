@@ -1,9 +1,9 @@
 ﻿namespace BaristaLabs.Skrapr.Common.DomainModel
 {
-    using System.Collections.Generic;
-    using System.ComponentModel;
     using BaristaLabs.Skrapr.Common.Converters;
     using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.ComponentModel;
 
     /// <summary>
     /// Represents a Scrapr target.
@@ -27,7 +27,8 @@
         /// <summary>
         /// Gets or sets the description of the target.
         /// </summary>
-        [JsonProperty("description")]
+        [JsonProperty("description", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [DefaultValue(null)]
         public string Description
         {
             get;
