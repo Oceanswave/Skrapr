@@ -1,0 +1,3 @@
+﻿# BaristaLabs.Skrapr.Workers.WebSkrapr
+
+
