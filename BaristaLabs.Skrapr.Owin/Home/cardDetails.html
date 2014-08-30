@@ -1,0 +1,8 @@
+﻿<div class="text-center">
+    <div data-ng-if="!card._id">
+        <i>The metaverse id does not correspond to a card.</i>
+    </div>
+    <div data-ng-if="card._id">
+        <img data-ng-src="http://mtgimage.com/multiverseid/{{card._id}}.jpg" alt="{{card.details.name}}" />    
+    </div>
+</div>

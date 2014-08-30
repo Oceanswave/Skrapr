@@ -1,0 +1,61 @@
+﻿///#source 1 1 /Dashboard/app.js
+angular.module('ngSkraprDashboard', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router'])
+    .config([
+        '$urlRouterProvider', '$stateProvider', function ($urlRouterProvider, $stateProvider) {
+
+            $urlRouterProvider.otherwise("/");
+
+            $stateProvider
+                .state('Home', {
+                    url: "/",
+                    views: {
+                        "navbar": {
+                            templateUrl: "/NavBar"
+                        },
+                        "pageContent": {
+                            templateUrl: "/Home",
+                            controller: "HomeCtrl"
+                        }
+                    }
+                })
+                .state('CardsByColor', {
+                    url: "/cards-by-color/{color}",
+                    views: {
+                        "navbar": {
+                            templateUrl: "/NavBar"
+                        },
+                        "pageContent": {
+                            templateUrl: "/CardsByColor",
+                            controller: "CardsByColorCtrl"
+                        }
+                    }
+                })
+                .state('CardDetails', {
+                    url: "/Details/{metaverseId}",
+                    views: {
+                        "navbar": {
+                            templateUrl: "/NavBar"
+                        },
+                        "pageContent": {
+                            templateUrl: "/CardDetails",
+                            controller: "CardDetailsCtrl"
+                        }
+                    }
+                })
+                .state('NotFound', {
+                    url: "/NotFound",
+                    views: {
+                        "navbar": {
+                            templateUrl: "/StandardNavBar"
+                        },
+                        "pageContent": {
+                            templateUrl: "/NotFound"
+                        }
+                    }
+                });
+        }
+    ]);
+///#source 1 1 /Dashboard/dashboardCtrl.js
+angular.module('ngSkraprDashboard')
+.controller('DashboardCtrl', ['$scope', function ($scope) {
+}]);

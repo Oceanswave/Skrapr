@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <title>Skrapr Dashboard</title>
+    <script type="text/javascript" src="/Components/head.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/Styles/styles.min.css" />
+    <link rel="stylesheet" type="text/css" href="dashboard.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300" rel="stylesheet" type="text/css">
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+</head>
+    <body ng-app="ngSkraprDashboard" data-ng-cloak="">
+        <div id="app-container">
+            <div id="primary-navbar">
+                <div class="navbar">
+                    <div class="burger">
+                        <i class="fa fa-bars fa-2x"></i>
+                    </div>
+
+                    <nav id="main_navigation">
+
+                        <ul id="nav-links" class="nav">
+
+                            <li data-nav-name="Projects" class="active">
+                                <a href="#/_all_dbs">
+                                    <i class="fa fa-list fa-lg"></i>
+                                    Projects
+                                </a>
+                            </li>
+
+                            <li data-nav-name="Active Skraprs">
+                                <a href="#/activetasks">
+                                    <i class="fa fa-tasks fa-lg"></i>
+                                    Active Tasks
+                                </a>
+                            </li>
+                            
+                            <li data-nav-name="Log">
+                                <a href="#/log">
+                                    <i class="fa fa-code-fork fa-lg"></i>
+                                    Log
+                                </a>
+                            </li>
+
+                            <li data-nav-name="Account">
+                                <a href="#/account">
+                                    <i class="fa fa-user fa-lg"></i>
+                                    Account
+                                </a>
+                            </li>
+
+                            <li data-nav-name="Support">
+                                <a href="#/support">
+                                    <i class="fa fa-life-ring fa-lg"></i>
+                                    Support
+                                </a>
+                            </li>
+
+
+                            <li data-nav-name="documentation">
+                                <a href="http://docs.skrapr.io/" target="_blank">
+                                    <i class="fa fa-book fa-lg"></i>
+                                    Documentation
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div id="bottom-links">
+                            <ul id="bottom-nav-links" class="nav"></ul>
+                        </div>
+
+                        <div id="footer-links">
+                            <div class="brand-container">
+                                <a class="brand" href="#">
+                                    <div class="icon"></div>
+                                </a>
+                            </div>
+
+                            <ul id="footer-nav-links" class="nav">
+                                <li>
+                                    <a href="#logout">
+                                        Logout
+                                        <span class="username">
+                                            skrapr
+                                            <span class="cluster">
+                                            </span>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div id="dashboard" class="container-fluid one-pane">
+            </div>
+        </div>
+        <script type="text/javascript" src="/Components/components.min.js"></script>
+        <script type="text/javascript" src="dashboard.min.js"></script>
+    </body>
+</html>
