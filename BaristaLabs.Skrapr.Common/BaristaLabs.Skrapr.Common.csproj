@@ -54,18 +54,18 @@
   <ItemGroup>
     <Compile Include="Converters\AuthenticatorConverter.cs" />
     <Compile Include="Converters\PropertyPluckrConverter.cs" />
-    <Compile Include="Converters\SkraprConverter.cs" />
     <Compile Include="Converters\ScheduleConverter.cs" />
+    <Compile Include="Converters\SkraprConverter.cs" />
     <Compile Include="DomainModel\Authenticator.cs" />
     <Compile Include="DomainModel\IAuthenticator.cs" />
     <Compile Include="DomainModel\ISchedule.cs" />
     <Compile Include="DomainModel\ISkrapr.cs" />
     <Compile Include="DomainModel\Project.cs" />
+    <Compile Include="DomainModel\PropertyPluckr.cs" />
     <Compile Include="DomainModel\Schedule.cs" />
     <Compile Include="DomainModel\SkraprBase.cs" />
     <Compile Include="DomainModel\WebSkrapr.cs" />
     <Compile Include="DomainModel\Target.cs" />
-    <Compile Include="DomainModel\PropertyPluckr.cs" />
     <Compile Include="DomainModel\PropertyValueType.cs" />
     <Compile Include="DomainModel\IPropertyPluckr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
