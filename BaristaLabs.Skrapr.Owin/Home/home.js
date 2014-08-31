@@ -1,7 +1,20 @@
 ﻿///#source 1 1 /Home/app.js
-angular.module('ngSkrapr', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router'])
+angular.module('ngSkrapr', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router', 'auth0'])
     .config([
-        '$urlRouterProvider', '$stateProvider', function ($urlRouterProvider, $stateProvider) {
+        '$urlRouterProvider', '$stateProvider', 'authProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, authProvider, $httpProvider) {
+
+            authProvider.init({
+                domain: 'baristalabs.auth0.com',
+                clientID: '1IftFqq8Vg4sIER3J247ed81AR1uDwvU',
+                callbackURL: 'http://localhost:8888/dashboard',
+                callbackOnLocationHash: true
+            });
+
+            authProvider.on('loginSuccess', ['$window', function ($window) {
+                $window.location.href = "/dashboard";
+            }]);
+
+            $httpProvider.interceptors.push('authInterceptor');
 
             $urlRouterProvider.otherwise("/");
 
@@ -10,7 +23,8 @@ angular.module('ngSkrapr', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router'
                     url: "/",
                     views: {
                         "navbar": {
-                            templateUrl: "/NavBar"
+                            templateUrl: "/NavBar",
+                            controller: "NavBarCtrl"
                         },
                         "pageContent": {
                             templateUrl: "/Home",
@@ -22,7 +36,8 @@ angular.module('ngSkrapr', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router'
                     url: "/cards-by-color/{color}",
                     views: {
                         "navbar": {
-                            templateUrl: "/NavBar"
+                            templateUrl: "/NavBar",
+                            controller: "NavBarCtrl"
                         },
                         "pageContent": {
                             templateUrl: "/CardsByColor",
@@ -34,7 +49,8 @@ angular.module('ngSkrapr', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router'
                     url: "/Details/{metaverseId}",
                     views: {
                         "navbar": {
-                            templateUrl: "/NavBar"
+                            templateUrl: "/NavBar",
+                            controller: "NavBarCtrl"
                         },
                         "pageContent": {
                             templateUrl: "/CardDetails",
@@ -46,7 +62,8 @@ angular.module('ngSkrapr', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router'
                     url: "/NotFound",
                     views: {
                         "navbar": {
-                            templateUrl: "/StandardNavBar"
+                            templateUrl: "/NavBar",
+                            controller: "NavBarCtrl"
                         },
                         "pageContent": {
                             templateUrl: "/NotFound"
@@ -54,7 +71,11 @@ angular.module('ngSkrapr', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router'
                     }
                 });
         }
-    ]);
+    ])
+    .run(['auth', function (auth) {
+
+        auth.hookEvents();
+    }]);
 ///#source 1 1 /Home/cardDetailsCtrl.js
 angular.module('ngSkrapr')
 .controller('CardDetailsCtrl', ['$scope', '$stateParams', '$http', function ($scope, $stateParams, $http) {
@@ -80,3 +101,40 @@ angular.module('ngSkrapr')
 angular.module('ngSkrapr')
 .controller('HomeCtrl', ['$scope', function ($scope) {
 }]);
+///#source 1 1 /Home/navBarCtrl.js
+angular.module('ngSkrapr')
+    .controller('NavBarCtrl', [
+        '$scope', '$stateParams', '$http', 'auth', '$window',
+        function($scope, $stateParams, $http, auth, $window) {
+            $scope.auth = auth;
+
+            $scope.dashboard = function() {
+                $window.location.href = "/dashboard";
+            };
+
+            $scope.signIn = function() {
+                auth.signup({
+                    popup: true
+                }, function() {
+                    // Success callback
+                }, function() {
+                    // Error callback
+                });
+            };
+
+            $scope.signIn = function() {
+                auth.signin({
+                    popup: true
+                }, function() {
+                    // Success callback
+                }, function() {
+                    // Error callback
+                });
+            };
+
+            $scope.signOut = function() {
+                auth.signout();
+            };
+        }
+    ]);
+

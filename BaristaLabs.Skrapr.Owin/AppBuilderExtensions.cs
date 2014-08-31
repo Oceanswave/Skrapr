@@ -6,6 +6,7 @@
 
     public static class AppBuilderExtensions
     {
+
         public static IAppBuilder UseSkraprWeb(this IAppBuilder app)
         {
             return app.UseNancy(options => options.PassThroughWhenStatusCodesAre(HttpStatusCode.NotFound,

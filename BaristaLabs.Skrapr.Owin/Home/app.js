@@ -1,6 +1,19 @@
-﻿angular.module('ngSkrapr', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router'])
+﻿angular.module('ngSkrapr', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router', 'auth0'])
     .config([
-        '$urlRouterProvider', '$stateProvider', function ($urlRouterProvider, $stateProvider) {
+        '$urlRouterProvider', '$stateProvider', 'authProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, authProvider, $httpProvider) {
+
+            authProvider.init({
+                domain: 'baristalabs.auth0.com',
+                clientID: '1IftFqq8Vg4sIER3J247ed81AR1uDwvU',
+                callbackURL: 'http://localhost:8888/dashboard',
+                callbackOnLocationHash: true
+            });
+
+            authProvider.on('loginSuccess', ['$window', function ($window) {
+                $window.location.href = "/dashboard";
+            }]);
+
+            $httpProvider.interceptors.push('authInterceptor');
 
             $urlRouterProvider.otherwise("/");
 
@@ -9,7 +22,8 @@
                     url: "/",
                     views: {
                         "navbar": {
-                            templateUrl: "/NavBar"
+                            templateUrl: "/NavBar",
+                            controller: "NavBarCtrl"
                         },
                         "pageContent": {
                             templateUrl: "/Home",
@@ -21,7 +35,8 @@
                     url: "/cards-by-color/{color}",
                     views: {
                         "navbar": {
-                            templateUrl: "/NavBar"
+                            templateUrl: "/NavBar",
+                            controller: "NavBarCtrl"
                         },
                         "pageContent": {
                             templateUrl: "/CardsByColor",
@@ -33,7 +48,8 @@
                     url: "/Details/{metaverseId}",
                     views: {
                         "navbar": {
-                            templateUrl: "/NavBar"
+                            templateUrl: "/NavBar",
+                            controller: "NavBarCtrl"
                         },
                         "pageContent": {
                             templateUrl: "/CardDetails",
@@ -45,7 +61,8 @@
                     url: "/NotFound",
                     views: {
                         "navbar": {
-                            templateUrl: "/StandardNavBar"
+                            templateUrl: "/NavBar",
+                            controller: "NavBarCtrl"
                         },
                         "pageContent": {
                             templateUrl: "/NotFound"
@@ -53,4 +70,8 @@
                     }
                 });
         }
-    ]);
+    ])
+    .run(['auth', function (auth) {
+
+        auth.hookEvents();
+    }]);

@@ -13,6 +13,16 @@
                 return View["dashboard.html"];
             };
 
+            Get["Projects"] = _ =>
+            {
+                return View["projects.html"];
+            };
+
+            Get["ActiveTasks"] = _ =>
+            {
+                return View["activeTasks.html"];
+            };
+
             //Script/CSS files
 
             Get["dashboard.css"] = _ =>

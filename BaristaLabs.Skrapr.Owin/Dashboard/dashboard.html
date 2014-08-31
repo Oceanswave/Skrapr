@@ -9,7 +9,7 @@
     <title>Skrapr Dashboard</title>
     <script type="text/javascript" src="/Components/head.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/Styles/styles.min.css" />
-    <link rel="stylesheet" type="text/css" href="dashboard.min.css" />
+    <link rel="stylesheet" type="text/css" href="/dashboard/dashboard.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Oswald:300" rel="stylesheet" type="text/css">
     <style>
@@ -19,7 +19,7 @@
     </style>
 </head>
     <body ng-app="ngSkraprDashboard" data-ng-cloak="">
-        <div id="app-container">
+        <div id="app-container" data-ng-controller="DashboardCtrl">
             <div id="primary-navbar">
                 <div class="navbar">
                     <div class="burger">
@@ -46,7 +46,7 @@
                             
                             <li data-nav-name="Log">
                                 <a href="#/log">
-                                    <i class="fa fa-code-fork fa-lg"></i>
+                                    <i class="fa fa-exchange fa-lg"></i>
                                     Log
                                 </a>
                             </li>
@@ -87,10 +87,10 @@
 
                             <ul id="footer-nav-links" class="nav">
                                 <li>
-                                    <a href="#logout">
+                                    <a class="btn btn-link" data-ng-click="signOut()">
                                         Logout
                                         <span class="username">
-                                            skrapr
+                                            {{auth.profile.nickname}}
                                             <span class="cluster">
                                             </span>
                                         </span>
@@ -101,10 +101,11 @@
                     </nav>
                 </div>
             </div>
-            <div id="dashboard" class="container-fluid one-pane">
-            </div>
+            <div id="dashboard" class="container-fluid" data-ui-view="dashboard"></div>
         </div>
         <script type="text/javascript" src="/Components/components.min.js"></script>
-        <script type="text/javascript" src="dashboard.min.js"></script>
+        <script src="//cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>
+        <script src="//cdn.auth0.com/w2/auth0-angular-2.2.js"></script>
+        <script type="text/javascript" src="/dashboard/dashboard.js"></script>
     </body>
 </html>

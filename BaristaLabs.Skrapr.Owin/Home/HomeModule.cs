@@ -13,6 +13,11 @@
                 return View["index.html"];
             };
 
+            Get["SignIn"] = _ =>
+            {
+                return View["SignIn.html"];
+            };
+
             Get["CardsByColor"] = _ =>
             {
                 return View["cardsByColor.html"];

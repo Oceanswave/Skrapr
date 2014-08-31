@@ -48,6 +48,24 @@
             $rootScope.$apply(fn);
           }
         };
+        authUtils.callbackify = function (nodeback, success, error, self) {
+          if (angular.isFunction(nodeback)) {
+            return function (args) {
+              args = Array.prototype.slice.call(arguments);
+              var callback = function (err, response, etc) {
+                if (err) {
+                  error && error(err);
+                  return;
+                }
+                // if more arguments then turn into an array for .spread()
+                etc = Array.prototype.slice.call(arguments, 1);
+                success && success.apply(null, etc);
+              };
+              args.push(authUtils.applied(callback));
+              nodeback.apply(self, args);
+            };
+          }
+        };
         authUtils.promisify = function (nodeback, self) {
           if (angular.isFunction(nodeback)) {
             return function (args) {
@@ -56,6 +74,7 @@
               var callback = function (err, response, etc) {
                 if (err) {
                   dfd.reject(err);
+                  return;
                 }
                 // if more arguments then turn into an array for .spread()
                 etc = Array.prototype.slice.call(arguments, 1);
@@ -75,14 +94,15 @@
         };
         authUtils.applied = function (fn) {
           // Adding arguments just due to a bug in Auth0.js.
-          /*jshint ignore:start */
           return function (err, response) {
-            /*jshint ignore:end */
+            // Using variables so that they don't get deleted by UglifyJS
+            err = err;
+            response = response;
             var argsCall = arguments;
             authUtils.safeApply(function () {
               fn.apply(null, argsCall);
-            });  /*jshint ignore:start */
-          };  /*jshint ignore:end */
+            });
+          };
         };
         return authUtils;
       }
@@ -117,27 +137,58 @@
       };
     }
   ]);
-  angular.module('auth0.storage', ['ngCookies']).service('authStorage', [
-    '$cookieStore',
-    function ($cookieStore) {
-      this.store = function (idToken, accessToken, state) {
-        $cookieStore.put('idToken', idToken);
-        $cookieStore.put('accessToken', accessToken);
+  angular.module('auth0.storage', []).service('authStorage', [
+    '$injector',
+    function ($injector) {
+      // Sets storage to use
+      var put, get, remove = null;
+      if (localStorage) {
+        put = function (what, value) {
+          return localStorage.setItem(what, value);
+        };
+        get = function (what) {
+          return localStorage.getItem(what);
+        };
+        remove = function (what) {
+          return localStorage.removeItem(what);
+        };
+      } else {
+        var $cookieStore = $injector.get('$cookieStore');
+        put = function (what, value) {
+          return $cookieStore.put(what, value);
+        };
+        get = function (what) {
+          return $cookieStore.get(what);
+        };
+        remove = function (what) {
+          return $cookieStore.remove(what);
+        };
+      }
+      this.store = function (idToken, accessToken, state, refreshToken) {
+        put('idToken', idToken);
+        if (accessToken) {
+          put('accessToken', accessToken);
+        }
         if (state) {
-          $cookieStore.put('state', state);
+          put('state', state);
+        }
+        if (refreshToken) {
+          put('refreshToken', refreshToken);
         }
       };
       this.get = function () {
         return {
-          idToken: $cookieStore.get('idToken'),
-          accessToken: $cookieStore.get('accessToken'),
-          state: $cookieStore.get('state')
+          idToken: get('idToken'),
+          accessToken: get('accessToken'),
+          state: get('state'),
+          refreshToken: get('refreshToken')
         };
       };
       this.remove = function () {
-        $cookieStore.remove('idToken');
-        $cookieStore.remove('accessToken');
-        $cookieStore.remove('state');
+        remove('idToken');
+        remove('accessToken');
+        remove('state');
+        remove('refreshToken');
       };
     }
   ]);
@@ -160,6 +211,7 @@
         this.loginState = options.loginState;
         this.clientID = options.clientID;
         this.sso = options.sso;
+        this.minutesToRenewToken = options.minutesToRenewToken || 120;
         var Constructor = Auth0Constructor;
         if (!Constructor && typeof Auth0Widget !== 'undefined') {
           Constructor = Auth0Widget;
@@ -213,13 +265,14 @@
             });
           };
           // SignIn
-          var onSigninOk = function (idToken, accessToken, state, locationEvent) {
-            authStorage.store(idToken, accessToken, state);
+          var onSigninOk = function (idToken, accessToken, state, refreshToken, locationEvent) {
+            authStorage.store(idToken, accessToken, state, refreshToken);
             var profilePromise = auth.getProfile(idToken);
             var response = {
                 idToken: idToken,
                 accessToken: accessToken,
                 state: state,
+                refreshToken: refreshToken,
                 isAuthenticated: true
               };
             angular.extend(auth, response);
@@ -240,20 +293,39 @@
             }
           }
           // Redirect mode
+          var refreshingToken = null;
           $rootScope.$on('$locationChangeStart', function (e) {
             var hashResult = config.auth0lib.parseHash($window.location.hash);
             if (!auth.isAuthenticated) {
               if (hashResult && hashResult.id_token) {
-                onSigninOk(hashResult.id_token, hashResult.access_token, hashResult.state, e);
+                onSigninOk(hashResult.id_token, hashResult.access_token, hashResult.state, hashResult.refresh_token, e);
                 return;
               }
               var storedValues = authStorage.get();
               if (storedValues && storedValues.idToken) {
                 if (auth.hasTokenExpired(storedValues.idToken)) {
-                  forbidden();
+                  if (storedValues.refreshToken) {
+                    refreshingToken = auth.refreshToken(storedValues.refreshToken);
+                    refreshingToken.then(function (idToken) {
+                      onSigninOk(idToken, storedValues.accessToken, storedValues.state, storedValues.refreshToken, e);
+                    }, function () {
+                      forbidden();
+                    }).finally(function () {
+                      refreshingToken = null;
+                    });
+                  } else {
+                    forbidden();
+                  }
                   return;
+                } else {
+                  var expireDate = auth.getTokenExpirationDate(storedValues.idToken);
+                  if (new Date().valueOf() - expireDate.valueOf() <= auth.config.minutesToRenewToken * 60 * 1000) {
+                    auth.renewIdToken(storedValues.idToken).then(function (token) {
+                      auth.idToken = token;
+                    });
+                  }
                 }
-                onSigninOk(storedValues.idToken, storedValues.accessToken, storedValues.state, e);
+                onSigninOk(storedValues.idToken, storedValues.accessToken, storedValues.state, storedValues.refreshToken, e);
                 return;
               }
               if (config.sso) {
@@ -274,7 +346,7 @@
           if (config.loginUrl) {
             $rootScope.$on('$routeChangeStart', function (e, nextRoute) {
               if (nextRoute.$$route && nextRoute.$$route.requiresLogin) {
-                if (!auth.isAuthenticated) {
+                if (!auth.isAuthenticated && !refreshingToken) {
                   $location.path(config.loginUrl);
                 }
               }
@@ -283,7 +355,7 @@
           if (config.loginState) {
             $rootScope.$on('$stateChangeStart', function (e, to) {
               if (to.data && to.data.requiresLogin) {
-                if (!auth.isAuthenticated) {
+                if (!auth.isAuthenticated && !refreshingToken) {
                   e.preventDefault();
                   $injector.get('$state').go(config.loginState);
                 }
@@ -294,16 +366,13 @@
           auth.config = config;
           var checkHandlers = function (options) {
             var successHandlers = getHandlers('loginSuccess');
-            if (!options.popup && !options.username && (!successHandlers || successHandlers.length === 0)) {
+            if (!options.popup && !options.username && !options.email && (!successHandlers || successHandlers.length === 0)) {
               throw new Error('You must define a loginSuccess handler ' + 'if not using popup mode or not doing ro call because that means you are doing a redirect');
             }
           };
           auth.hookEvents = function () {
           };
-          auth.hasTokenExpired = function (token) {
-            if (!token) {
-              return true;
-            }
+          auth.getTokenExpirationDate = function (token) {
             var parts = token.split('.');
             if (parts.length !== 3) {
               return true;
@@ -323,6 +392,13 @@
             var d = new Date(0);
             // The 0 here is the key, which sets the date to the epoch
             d.setUTCSeconds(decoded.exp);
+            return d;
+          };
+          auth.hasTokenExpired = function (token) {
+            if (!token) {
+              return true;
+            }
+            var d = auth.getTokenExpirationDate(token);
             if (isNaN(d)) {
               return true;
             }
@@ -335,51 +411,91 @@
               return true;
             }
           };
-          auth.getToken = function (clientID, options) {
+          auth.getToken = function (options) {
             options = options || { scope: 'openid' };
+            if (!options.id_token && !options.refresh_token) {
+              options.id_token = auth.idToken;
+            }
             var getDelegationTokenAsync = authUtils.promisify(config.auth0js.getDelegationToken, config.auth0js);
-            return getDelegationTokenAsync(clientID, auth.idToken, options).then(function (delegationResult) {
+            return getDelegationTokenAsync(options).then(function (delegationResult) {
               return delegationResult.id_token;
             });
           };
-          auth.refreshToken = function (options) {
-            return auth.getToken(config.clientID, options);
+          auth.refreshToken = function (refresh_token) {
+            var refreshTokenAsync = authUtils.promisify(config.auth0js.refreshToken, config.auth0js);
+            return refreshTokenAsync(refresh_token || auth.refreshToken).then(function (delegationResult) {
+              return delegationResult.id_token;
+            });
           };
-          auth.signin = function (options, lib) {
+          auth.renewIdToken = function (id_token) {
+            var renewIdTokenAsync = authUtils.promisify(config.auth0js.renewIdToken, config.auth0js);
+            return renewIdTokenAsync(id_token || auth.idToken).then(function (delegationResult) {
+              return delegationResult.id_token;
+            });
+          };
+          auth.signin = function (options, successCallback, errorCallback, lib) {
             options = options || {};
             checkHandlers(options);
             var auth0lib = lib || config.auth0lib;
-            var signinPromisify = authUtils.promisify(auth0lib.signin, auth0lib);
-            var signinAsync = config.isWidget ? signinPromisify(options, null) : signinPromisify(options);
-            return signinAsync.spread(function (profile, idToken, accessToken, state) {
-              return onSigninOk(idToken, accessToken, state);
-            })['catch'](function (err) {
-              callHandler('loginFailure', { error: err });
-              throw err;
-            });
+            var signinCall = authUtils.callbackify(auth0lib.signin, function (profile, idToken, accessToken, state, refreshToken) {
+                onSigninOk(idToken, accessToken, state, refreshToken).then(function (profile) {
+                  if (successCallback) {
+                    successCallback(profile);
+                  }
+                });
+              }, function (err) {
+                callHandler('loginFailure', { error: err });
+                if (errorCallback) {
+                  errorCallback(err);
+                }
+              }, auth0lib);
+            if (config.isWidget) {
+              signinCall(options, null);
+            } else {
+              signinCall(options);
+            }
           };
-          auth.signup = function (options) {
+          auth.signup = function (options, successCallback, errorCallback) {
             options = options || {};
             checkHandlers(options);
             var auth0lib = config.auth0lib;
-            var signupPromisify = authUtils.promisify(auth0lib.signup, auth0lib);
-            var signupAsync = config.isWidget ? signupPromisify(options, null) : signupPromisify(options);
-            return signupAsync.spread(function (profile, idToken, accessToken, state) {
-              return onSigninOk(idToken, accessToken, state);
-            })['catch'](function (err) {
-              callHandler('loginFailure', { error: err });
-              throw err;
-            });
+            var signupCall = authUtils.callbackify(auth0lib.signup, function (profile, idToken, accessToken, state, refreshToken) {
+                if (!angular.isUndefined(options.auto_login) && !options.auto_login) {
+                  successCallback();
+                } else {
+                  onSigninOk(idToken, accessToken, state, refreshToken).then(function (profile) {
+                    if (successCallback) {
+                      successCallback(profile);
+                    }
+                  });
+                }
+              }, function (err) {
+                callHandler('loginFailure', { error: err });
+                if (errorCallback) {
+                  errorCallback(err);
+                }
+              }, auth0lib);
+            if (config.isWidget) {
+              signupCall(options, null);
+            } else {
+              signupCall(options);
+            }
           };
-          auth.reset = function (options) {
+          auth.reset = function (options, successCallback, errorCallback) {
             options = options || {};
             var auth0lib = config.auth0lib;
-            var resetPromisify = authUtils.promisify(auth0lib.reset, auth0lib);
-            return config.isWidget ? resetPromisify(options, null) : resetPromisify(options);
+            var resetCall;
+            if (config.isWidget) {
+              resetCall = authUtils.callbackify(auth0lib.reset, successCallback, errorCallback, auth0lib);
+            } else {
+              resetCall = authUtils.callbackify(auth0lib.changePassword, successCallback, errorCallback, auth0lib);
+            }
+            resetCall(options);
           };
           auth.signout = function () {
             authStorage.remove();
             auth.profile = null;
+            auth.profilePromise = null;
             auth.idToken = null;
             auth.state = null;
             auth.accessToken = null;
@@ -388,7 +504,8 @@
           };
           auth.getProfile = function (idToken) {
             var getProfilePromisify = authUtils.promisify(config.auth0lib.getProfile, config.auth0lib);
-            return getProfilePromisify(idToken || auth.idToken).then(function (profile) {
+            auth.profilePromise = getProfilePromisify(idToken || auth.idToken);
+            return auth.profilePromise.then(function (profile) {
               auth.profile = profile;
               return profile;
             });

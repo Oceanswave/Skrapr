@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
@@ -20,7 +20,9 @@
         <div data-ui-view="navbar"></div>
         <div data-ui-view="pageContent"></div>
         <script type="text/javascript" src="/Components/components.min.js"></script>
-        <script type="text/javascript" src="home.min.js"></script>
+        <script src="//cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>
+        <script src="//cdn.auth0.com/w2/auth0-angular-2.2.js"></script>
+        <script type="text/javascript" src="home.js"></script>
 
         <script type="text/ng-template" id="/NavBar">
             @Partial['navbar.html']

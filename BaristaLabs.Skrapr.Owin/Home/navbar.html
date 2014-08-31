@@ -12,23 +12,20 @@
             <ul class="nav navbar-nav navbar-right hidden-xs">
                 <li><a data-ui-sref="AboutUs">About Us</a></li>
                 <!-- Sign in & Sign up -->
-                <li id="sign-up" data-ng-if="!security.user"><a data-ui-sref="SignUp">Sign Up</a></li>
-                <li id="sign-in" data-ng-if="!security.user"><a data-ui-sref="SignIn">Sign In</a></li>
+                <li id="sign-up" data-ng-if="!auth.isAuthenticated"><a class="btn btn-link" data-ng-click="signUp()">Sign Up</a></li>
+                <li id="sign-in" data-ng-if="!auth.isAuthenticated"><a class="btn btn-link" data-ng-click="signIn()">Sign In</a></li>
                 <!-- Signed in. Profile Menu -->
-                <li id="cogs-menu" class="hidden">
-                    <a href="edit-profile.html">
-                        <i class="fa fa-gears fa-lg"></i>
-                    </a>
-                </li>
-                <li data-ng-if="security.user" data-ng-cloak="">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{security.user.userName}}<b class="caret"></b></a>
+                <li class="dropdown" data-ng-if="auth.isAuthenticated" data-ng-cloak="">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{auth.profile.nickname}}<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li class="account">
-                            <div class="avatar"></div>
-                            <p><b>{{security.user.userName}}</b><br />{{security.user.email}}</p>
-                            <p><div class="btn btn-primary" data-ng-click="goHome()">Dashboard</div></p>
-                            <p><a data-ui-sref="ManageProfile">Profile</a> | <a data-ng-click="security.logout()" style="cursor: pointer;">Sign out</a></p>
-                            <div class="clearfix"></div>
+                        <li>
+                            <div style="margin: 10px;">
+                                <div style="float:left"><img data-ng-src="{{auth.profile.picture}}" width="50" alt="Photo"/></div>
+                                <p><b>{{auth.profile.name}}</b><br />{{auth.profile.email}}</p>
+                                <p><div class="btn btn-primary" data-ng-click="dashboard()">Dashboard</div></p>
+                                <p><a data-ui-sref="ManageProfile">Profile</a> | <a data-ng-click="signOut()" style="cursor: pointer;">Sign out</a></p>
+                                <div class="clearfix"></div>
+                            </div>
                         </li>
                     </ul>
                 </li>

@@ -12,5 +12,6 @@
   <files>
     <file>/Dashboard/app.js</file>
     <file>/Dashboard/dashboardCtrl.js</file>
+    <file>/Dashboard/projectsCtrl.js</file>
   </files>
 </bundle>

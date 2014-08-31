@@ -14,5 +14,6 @@
     <file>/Home/cardDetailsCtrl.js</file>
     <file>/Home/cardsByColorCtrl.js</file>
     <file>/Home/homeCtrl.js</file>
+    <file>/Home/navBarCtrl.js</file>
   </files>
 </bundle>
