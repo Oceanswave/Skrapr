@@ -2,9 +2,12 @@
 {
     using System;
     using BaristaLabs.Skrapr.Common;
+    using BaristaLabs.Skrapr.Common.DomainModel;
     using BaristaLabs.Skrapr.Owin.Authentication;
     using Nancy;
+    using Nancy.ModelBinding;
     using Nancy.Security;
+    using Newtonsoft.Json;
 
     public class HomeModule : NancyModule
     {
@@ -12,11 +15,6 @@
             : base("/Api")
         {
             this.RequiresAuthentication();
-
-            Get[""] = _ =>
-            {
-                return Response.AsJson("Hello, world");
-            };
 
             Get["/projects", true] = async (_, token) =>
             {
@@ -26,6 +24,31 @@
                     throw new InvalidOperationException("CurrentUser was null.");
 
                 var project = await Repository.ListProjectsAsync(skraprUser.UserProfile.UserId);
+
+                return Response.AsJson(project);
+            };
+
+            Put["/projects", true] = async (_, token) =>
+            {
+                var skraprUser = this.Context.CurrentUser as Auth0User;
+
+                if (skraprUser == null)
+                    throw new InvalidOperationException("CurrentUser was null.");
+
+                var project = this.Bind<Project>();
+                var result = await Repository.CreateOrUpdateProjectAsync(skraprUser.UserProfile.UserId, project);
+
+                return Response.AsJson(result);
+            };
+
+            Get["/projects/{projectId}", true] = async (_, token) =>
+            {
+                var skraprUser = this.Context.CurrentUser as Auth0User;
+
+                if (skraprUser == null)
+                    throw new InvalidOperationException("CurrentUser was null.");
+
+                var project = await Repository.GetProjectAsync(skraprUser.UserProfile.UserId, (string)_.projectId);
 
                 return Response.AsJson(project);
             };

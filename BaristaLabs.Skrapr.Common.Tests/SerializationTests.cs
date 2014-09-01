@@ -121,6 +121,7 @@
 
         private static readonly Project ExampleProject01 = new Project
         {
+            UserId = "google|12345",
             Name = "Weather Comparison",
             Description = "Skrapes numerous weather sources to compare the results.",
             Status = ProjectStatus.Active

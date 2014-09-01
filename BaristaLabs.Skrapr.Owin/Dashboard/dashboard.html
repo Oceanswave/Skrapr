@@ -22,7 +22,7 @@
         <div id="app-container" data-ng-controller="DashboardCtrl">
             <div id="primary-navbar">
                 <div class="navbar">
-                    <div class="burger">
+                    <div class="burger" data-ng-click="toggleMinimized()">
                         <i class="fa fa-bars fa-2x"></i>
                     </div>
 
@@ -31,35 +31,35 @@
                         <ul id="nav-links" class="nav">
 
                             <li data-nav-name="Projects" class="active">
-                                <a href="#/_all_dbs">
+                                <a data-ui-sref="Projects">
                                     <i class="fa fa-list fa-lg"></i>
                                     Projects
                                 </a>
                             </li>
 
                             <li data-nav-name="Active Skraprs">
-                                <a href="#/activetasks">
+                                <a data-ui-sref="ActiveTasks">
                                     <i class="fa fa-tasks fa-lg"></i>
                                     Active Tasks
                                 </a>
                             </li>
                             
                             <li data-nav-name="Log">
-                                <a href="#/log">
+                                <a data-ui-sref="Log">
                                     <i class="fa fa-exchange fa-lg"></i>
                                     Log
                                 </a>
                             </li>
 
                             <li data-nav-name="Account">
-                                <a href="#/account">
+                                <a data-ui-sref="Account">
                                     <i class="fa fa-user fa-lg"></i>
                                     Account
                                 </a>
                             </li>
 
                             <li data-nav-name="Support">
-                                <a href="#/support">
+                                <a data-ui-sref="Support">
                                     <i class="fa fa-life-ring fa-lg"></i>
                                     Support
                                 </a>
@@ -101,7 +101,7 @@
                     </nav>
                 </div>
             </div>
-            <div id="dashboard" class="container-fluid" data-ui-view="dashboard"></div>
+            <div id="dashboard" class="container-fluid one-pane" data-ui-view="dashboard" data-ng-style="getDashboardStyle()"></div>
         </div>
         <script type="text/javascript" src="/Components/components.min.js"></script>
         <script src="//cdn.auth0.com/w2/auth0-widget-5.2.min.js"></script>

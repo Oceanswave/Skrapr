@@ -2071,7 +2071,9 @@
     <Content Include="Dashboard\dashboardCtrl.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Dashboard\projectDetails.html" />
     <Content Include="Dashboard\projects.html" />
+    <Content Include="Dashboard\projectDetailsCtrl.js" />
     <Content Include="Dashboard\projectsCtrl.js" />
     <Content Include="Home\app.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

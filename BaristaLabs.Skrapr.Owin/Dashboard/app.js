@@ -27,12 +27,21 @@
             $urlRouterProvider.otherwise("/projects");
 
             $stateProvider
-                .state('Home', {
+                .state('Projects', {
                     url: "/projects",
                     views: {
                         "dashboard": {
                             templateUrl: "/dashboard/Projects",
                             controller: "ProjectsCtrl"
+                        }
+                    }
+                })
+                .state('ProjectDetails', {
+                    url: "/projects/{projectId}",
+                    views: {
+                        "dashboard": {
+                            templateUrl: "/dashboard/ProjectDetails",
+                            controller: "ProjectDetailsCtrl"
                         }
                     }
                 })

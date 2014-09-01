@@ -1,36 +1,33 @@
 ﻿namespace BaristaLabs.Skrapr.Common
 {
-    using System.Reactive.Linq;
+    using System;
+    using System.Linq;
     using BaristaLabs.Skrapr.Common.DomainModel;
     using MyCouch;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Threading.Tasks;
+    using MyCouch.Requests;
 
     public partial class Repository
     {
-        public static string ProjectsDatabaseName
+        public static async Task<IList<Project>> ListProjectsAsync(string userId)
         {
-            get
+            using (var store = new MyCouchStore(GetDbClient()))
             {
-                return ConfigurationManager.AppSettings.Get("TheoryBox_Database_Cards");
-            }
-        }
+                var query = new QueryViewRequest("projects", "byUserId").Configure(q => q
+                    .Key(userId)
+                    .Reduce(false));
 
-        public static async Task<IList<Project>> ListProjectsAsync(string accountId)
-        {
-            using (var store = new MyCouchStore(GetDbClient(ProjectsDatabaseName)))
-            {
                 var existingCardResponse =
-                    await store.Query<Project>(new Query("Projects")).Select(p => p.Value).ToList();
+                    await store.Client.Views.QueryAsync<Project>(query);
 
-                return existingCardResponse;
+                return existingCardResponse.Rows.Select(r => r.Value).ToList();
             }
         }
 
         public static async Task<bool> ProjectExistsAsync(string accountId, string projectId)
         {
-            using (var store = new MyCouchStore(GetDbClient(ProjectsDatabaseName)))
+            using (var store = new MyCouchStore(GetDbClient()))
             {
                 var existingCardResponse =
                     await store.ExistsAsync(projectId);
@@ -39,20 +36,33 @@
             }
         }
 
-        public static async Task<Project> GetProjectAsync(string accountId, string projectId)
+        public static async Task<Project> GetProjectAsync(string userId, string projectId)
         {
-            using (var store = new MyCouchStore(GetDbClient(ProjectsDatabaseName)))
+            using (var store = new MyCouchStore(GetDbClient()))
             {
                 return await store.GetByIdAsync<Project>(projectId);
             }
         }
 
-        public static async Task<Project> CreateOrUpdateProjectAsync(Project project)
+        public static async Task<Project> CreateOrUpdateProjectAsync(string userId, Project project)
         {
-            using (var store = new MyCouchStore(GetDbClient(ProjectsDatabaseName)))
+            if (String.IsNullOrWhiteSpace(userId))
+                throw new ArgumentNullException("userId");
+
+            if (project == null)
+                throw new ArgumentNullException("project");
+
+            project.UserId = userId;
+            if (String.IsNullOrEmpty(project.Id))
             {
-                var setResponse = await store.SetAsync(project);
-                return setResponse;
+                project.CreatedOn = DateTime.UtcNow;
+            }
+            project.LastUpdated = DateTime.UtcNow;
+
+            using (var store = new MyCouchStore(GetDbClient()))
+            {
+                var setResponse = await store.Client.Entities.PostAsync(project);
+                return setResponse.Content;
             }
         }
     }

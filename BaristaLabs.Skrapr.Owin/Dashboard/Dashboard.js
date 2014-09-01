@@ -28,12 +28,21 @@ angular.module('ngSkraprDashboard', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'u
             $urlRouterProvider.otherwise("/projects");
 
             $stateProvider
-                .state('Home', {
+                .state('Projects', {
                     url: "/projects",
                     views: {
                         "dashboard": {
                             templateUrl: "/dashboard/Projects",
                             controller: "ProjectsCtrl"
+                        }
+                    }
+                })
+                .state('ProjectDetails', {
+                    url: "/projects/{projectId}",
+                    views: {
+                        "dashboard": {
+                            templateUrl: "/dashboard/ProjectDetails",
+                            controller: "ProjectDetailsCtrl"
                         }
                     }
                 })
@@ -58,6 +67,21 @@ angular.module('ngSkraprDashboard', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'u
 angular.module('ngSkraprDashboard')
 .controller('DashboardCtrl', ['$scope', 'auth', function ($scope, auth) {
     $scope.auth = auth;
+    $scope.model = {
+        isMinimized: false
+    };
+
+    $scope.toggleMinimized = function() {
+        $scope.model.isMinimized = !$scope.model.isMinimized;
+    };
+
+    $scope.getDashboardStyle = function() {
+        var result = {
+            left: $scope.model.isMinimized ? "58px" : "220px"
+        };
+
+        return result;
+    };
 
     $scope.signOut = function () {
         auth.signout();
@@ -65,11 +89,88 @@ angular.module('ngSkraprDashboard')
 }]);
 ///#source 1 1 /Dashboard/projectsCtrl.js
 angular.module('ngSkraprDashboard')
-.controller('ProjectsCtrl', ['$scope', '$http', function ($scope, $http) {
-    $http({
-        method: "GET",
-        url: "/API/Projects/"
-    }).success(function(data) {
-        console.log(data);
-    });
-}]);
+    .controller('ProjectsCtrl', [
+        '$scope', '$http', '$modal', '$state',
+        function ($scope, $http, $modal, $state) {
+            $scope.model = {
+                isLoading: true
+            };
+
+            $scope.projects = [];
+
+            $scope.addNewProject = function() {
+                $modal.open({
+                    templateUrl: 'new-project-tmpl.html',
+                    controller: "NewProjectCtrl"
+                }).result.then(function(project) {
+                    $state.go("ProjectDetails", { projectId: project.Id });
+                });
+            };
+
+            $scope.listProjects = function () {
+                $scope.model.isLoading = true;
+
+                $http({
+                    method: "GET",
+                    url: "/API/Projects/"
+                }).success(function(data) {
+                    $scope.projects = data;
+                    $scope.model.isLoading = false;
+                }).error(function(data) {
+                    $scope.projects = [];
+                    $scope.model.isLoading = false;
+                });
+            }
+
+            $scope.listProjects();
+        }
+    ])
+    .controller('NewProjectCtrl', [
+        '$scope', '$http', '$modalInstance',
+        function ($scope, $http, $modalInstance) {
+            $scope.model = {
+                isSaving: false
+            };
+
+            $scope.project = {
+                name: "",
+                description: ""
+            };
+
+            $scope.ok = function () {
+                $http({
+                    method: "PUT",
+                    url: "/API/Projects/",
+                    data: $scope.project
+                }).success(function (data) {
+                    $modalInstance.close(data);
+                });
+                
+            };
+        }
+    ]);
+
+
+///#source 1 1 /Dashboard/projectDetailsCtrl.js
+angular.module('ngSkraprDashboard')
+    .controller('ProjectDetailsCtrl', [
+        '$scope', '$http', '$modal', '$stateParams',
+        function($scope, $http, $modal, $stateParams) {
+            $scope.project = null;
+
+            $scope.getProjectDetails = function(projectId) {
+                $http({
+                    method: "GET",
+                    url: "/API/Projects/" + projectId
+                }).success(function(data) {
+                    $scope.project = data;
+                }).error(function(data) {
+                    $scope.project = null;
+                });
+            };
+
+            $scope.getProjectDetails($stateParams.projectId);
+        }
+    ]);
+
+

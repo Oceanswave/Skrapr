@@ -18,6 +18,11 @@
                 return View["projects.html"];
             };
 
+            Get["ProjectDetails"] = _ =>
+            {
+                return View["projectDetails.html"];
+            };
+
             Get["ActiveTasks"] = _ =>
             {
                 return View["activeTasks.html"];

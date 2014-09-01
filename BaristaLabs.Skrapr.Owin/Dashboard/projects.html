@@ -1,3 +1,59 @@
 ﻿<div>
-    asdfasdfasdfasdfasdf
+    <div class="dashboard-header">Projects</div>
+    <div data-tabset="">
+        <div data-tab="" data-heading="Your Projects">
+            <div style="padding: 10px;">
+                <div class="btn btn-primary" data-ng-click="addNewProject()"><i class="fa fa-plus"></i>&nbsp;Add New Project</div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-if="model.isLoading == false && projects.length == 0">
+                            <td column-span="2"><i>No projects exist, please create one.</i></td>
+                        </tr>
+                        <tr data-ng-repeat="project in projects">
+                            <td><a class="btn btn-link" data-ui-sref="ProjectDetails({projectId: project.Id})">{{project.name}}</a></td>
+                            <td>{{project.description}}</td>
+                            <td>??</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<script id="new-project-tmpl.html" type="text/ng-template">
+    <div class="modal-header">
+        <h4 style="font-weight: bold;">Add New Project</h4>
+    </div>
+    <div class="modal-body">
+        <form name="form" role="form" novalidate>
+            <div class="form-group has-feedback">
+                <label for="projectTitle">Project Name</label>
+                <input type="text" class="form-control" id="projectTitle" placeholder="Enter a Project Name" required data-ng-model="project.name">
+                <span class="fa fa-check form-control-feedback"></span>
+            </div>
+            <div class="form-group">
+                <label for="projectDescription">Project Description</label>
+                <textarea class="form-control" id="projectDescription" placeholder="Project Description" data-ng-model="project.description"></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()" data-ng-disabled="form.$invalid">OK</button>
+        <button class="btn btn-warning" ng-click="$dismiss()">Cancel</button>
+    </div>
+</script>

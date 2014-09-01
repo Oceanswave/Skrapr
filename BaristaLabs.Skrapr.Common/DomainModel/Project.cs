@@ -1,5 +1,6 @@
 ﻿namespace BaristaLabs.Skrapr.Common.DomainModel
 {
+    using System;
     using System.Collections.Generic;
     using Newtonsoft.Json;
     using System.ComponentModel;
@@ -23,6 +24,16 @@
         /// </summary>
         [JsonProperty("_id")]
         public string Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the id of the user that the project is associated with.
+        /// </summary>
+        [JsonProperty("userId")]
+        public string UserId
         {
             get;
             set;
@@ -56,6 +67,20 @@
         [JsonConverter(typeof(StringEnumConverter))]
         [DefaultValue(false)]
         public ProjectStatus Status
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("createdOn")]
+        public DateTime? CreatedOn
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("lastUpdated")]
+        public DateTime? LastUpdated
         {
             get;
             set;

@@ -1,5 +1,6 @@
 {
   "_id": null,
+  "userId": "google|12345",
   "name": "Weather Comparison",
   "description": "Skrapes numerous weather sources to compare the results.",
   "status": "Active"
