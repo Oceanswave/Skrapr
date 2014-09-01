@@ -1,8 +1,10 @@
 ﻿namespace BaristaLabs.Skrapr.Common.DomainModel
 {
+    using System.Collections.Generic;
     using Newtonsoft.Json;
     using System.ComponentModel;
     using Newtonsoft.Json.Converters;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Represents the base property pluckr class.
@@ -12,6 +14,9 @@
     /// </remarks>
     public abstract class PropertyPluckrBase : IPropertyPluckr
     {
+        /// <summary>
+        /// Gets the type of property plucker.
+        /// </summary>
         [JsonProperty("type", Required = Required.Always)]
         public abstract string Type
         {
@@ -58,6 +63,13 @@
         [JsonProperty("isArray", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         [DefaultValue(false)]
         public bool IsArray
+        {
+            get;
+            set;
+        }
+
+        [JsonExtensionData]
+        public IDictionary<string, JToken> AdditionalData
         {
             get;
             set;

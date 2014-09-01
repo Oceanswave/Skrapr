@@ -1,7 +1,9 @@
 ﻿namespace BaristaLabs.Skrapr.Common.DomainModel
 {
+    using System.Collections.Generic;
     using System.ComponentModel;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     public abstract class AuthenticatorBase : IAuthenticator
     {
@@ -29,6 +31,13 @@
         /// </summary>
         [JsonProperty("password", Required = Required.Always)]
         public string Password
+        {
+            get;
+            set;
+        }
+
+        [JsonExtensionData]
+        public IDictionary<string, JToken> AdditionalData
         {
             get;
             set;

@@ -1,5 +1,6 @@
 {
-  "type": "web",
+  "_id": null,
+  "projectId": "ExampleProject01",
   "name": "Weather.com",
   "description": "Gets weather information from weather.com",
   "userAgent": "Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko",
@@ -23,44 +24,6 @@
       "authenticationScript": "function(username, password) {\r\n    var form = jQuery('.loginForm');\r\n    jQuery(form).find('.username').val(username);\r\n    jQuery(form).find('.password').val(password);\r\n    form.submit();\r\n}",
       "username": "testuser",
       "password": "password"
-    }
-  ],
-  "targets": [
-    {
-      "name": "Front Page Weather",
-      "description": "Gets the weather information from the front page.",
-      "pattern": {
-        "url": "http://www.weather.com/weather/today/\\d{5}",
-        "mimeType": "text/html"
-      },
-      "type": "Weather",
-      "requireJQuery": true,
-      "properties": {
-        "source": {
-          "type": "const",
-          "value": "Weather.com"
-        },
-        "zipCode": {
-          "type": "lastPathSegment",
-          "valueType": "PrimaryKey"
-        },
-        "url": {
-          "type": "url"
-        },
-        "retrievedAt": {
-          "type": "nowUtc"
-        },
-        "rightNow": {
-          "type": "cssText",
-          "selector": "ul.nav-list li a",
-          "isArray": true
-        },
-        "earlierToday": {
-          "type": "script",
-          "script": "jQuery('ul.nav-list li a').text();",
-          "transform": "function(result) {\r\n    return result\r\n}"
-        }
-      }
     }
   ],
   "schedule": [

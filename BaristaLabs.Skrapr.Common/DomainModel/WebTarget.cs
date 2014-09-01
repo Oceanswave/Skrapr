@@ -6,59 +6,17 @@
     using System.ComponentModel;
 
     /// <summary>
-    /// Represents a Scrapr target.
+    /// Represents a WebScrapr target.
     /// </summary>
     /// <remarks>
     /// Once a page has been visited by the Scrapr, all targets will be evaluated to see if they match.
     /// If a pattern matches, then the contents of that page will be skraped and the result stored.
     /// </remarks>
-    public class Target
+    public class WebTarget : TargetBase
     {
-        /// <summary>
-        /// Gets or sets the name of the target.
-        /// </summary>
-        [JsonProperty("name", Required = Required.Always)]
-        public string Name
+        public override string Type
         {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the description of the target.
-        /// </summary>
-        [JsonProperty("description", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        [DefaultValue(null)]
-        public string Description
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets a pattern that this target will apply.
-        /// </summary>
-        /// <remarks>
-        /// For instance, if a pattern is http://.*.winamp.com then...
-        /// 
-        /// All targets whose patterns match will be executed.
-        /// </remarks>
-        [JsonProperty("pattern")]
-        public TargetPattern Pattern
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value that indicates if the target is disabled.
-        /// </summary>
-        [JsonProperty("disabled", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        [DefaultValue(false)]
-        public bool Disabled
-        {
-            get;
-            set;
+            get { return "web"; }
         }
 
         /// <summary>
@@ -67,22 +25,8 @@
         /// <remarks>
         /// The value here indicates the type name that is stored in the type field of the persisted skrapr result.
         /// </remarks>
-        [JsonProperty("type", Required = Required.Always)]
-        public string Type
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets a value that indicates if the target is a blob. (Optional - Default is false)
-        /// </summary>
-        /// <remarks>
-        /// If this value is true, the response body will be stored as a blob
-        /// </remarks>
-        [JsonProperty("isBlob", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        [DefaultValue(false)]
-        public bool IsBlob
+        [JsonProperty("resultType", Required = Required.Always)]
+        public string ResultType
         {
             get;
             set;

@@ -11,15 +11,15 @@
     [TestClass]
     public class SerializationTests
     {
-        private static readonly Target ExampleTarget01 = new Target
+        private static readonly WebTarget ExampleTarget01 = new WebTarget
             {
+                SkraprId = "ExampleSkrapr01",
                 Name = "Front Page Weather",
                 Description = "Gets the weather information from the front page.",
-                Type = "Weather",
+                ResultType = "Weather",
                 RequireJQuery = true,
                 AdditionalScriptDependencies = null,
-                Disabled = false,
-                IsBlob = false,
+                Status = TargetStatus.Active,
                 Pattern = new TargetPattern
                 {
                     Url = @"http://www.weather.com/weather/today/\d{5}",
@@ -71,8 +71,9 @@
                 }
             };
 
-        private static readonly WebSkrapr ExampleSkrapr01 = new WebSkrapr
+        private static readonly Skrapr ExampleSkrapr01 = new Skrapr
         {
+            ProjectId = "ExampleProject01",
             Name = "Weather.com",
             Description = "Gets weather information from weather.com",
             StartUrls = new List<string>
@@ -85,10 +86,7 @@
             },
             UserAgent = "Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko",
             IgnoreRobots = true,
-            Targets = new List<Target>
-            {
-                ExampleTarget01
-            },
+
             Authenticators = new List<IAuthenticator>
             {
                 new NtlmAuthenticator
@@ -125,10 +123,7 @@
         {
             Name = "Weather Comparison",
             Description = "Skrapes numerous weather sources to compare the results.",
-            Skraprs = new List<ISkrapr>
-            {
-                ExampleSkrapr01
-            }
+            Status = ProjectStatus.Active
         };
 
         [TestMethod]
@@ -146,9 +141,9 @@
         {
             //Start checking!
             var json = Resources.ExampleTarget01;
-            var result = JsonConvert.DeserializeObject<Target>(json);
+            var result = JsonConvert.DeserializeObject<WebTarget>(json);
 
-            result.ShouldBeEquivalentTo(ExampleTarget01);
+            result.ShouldBeEquivalentTo(ExampleTarget01, options => options.Excluding(su => su.PropertyPath.EndsWith("AdditionalData")));
         }
 
         [TestMethod]
@@ -166,7 +161,7 @@
         {
             //Start checking!
             var json = Resources.ExampleSkrapr01;
-            var result = JsonConvert.DeserializeObject<WebSkrapr>(json);
+            var result = JsonConvert.DeserializeObject<Skrapr>(json);
 
             result.ShouldBeEquivalentTo(ExampleSkrapr01);
         }

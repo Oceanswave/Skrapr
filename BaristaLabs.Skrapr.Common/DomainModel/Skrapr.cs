@@ -1,23 +1,39 @@
 ﻿namespace BaristaLabs.Skrapr.Common.DomainModel
 {
-    using System.Collections.Generic;
-    using System.ComponentModel;
     using BaristaLabs.Skrapr.Common.Converters;
     using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
-    /// Represents a Web Skrapr -- a collection of rules that scrape web pages.
+    /// Represents a Skrapr -- a collection of rules that scrape a number of targets.
     /// </summary>
-    public class WebSkrapr : SkraprBase
+    public class Skrapr
     {
-        public WebSkrapr()
+        public Skrapr()
         {
             TypePropertyName = "_type";
         }
 
-        public override string Type
+        /// <summary>
+        /// Gets or sets the id of the project.
+        /// </summary>
+        [JsonProperty("_id")]
+        public string Id
         {
-            get { return "web"; }
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the id of the project that the skrapr is associated with.
+        /// </summary>
+        [JsonProperty("projectId", Required = Required.Always)]
+        public string ProjectId
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -146,24 +162,18 @@
         }
 
         /// <summary>
-        /// Gets or sets a collection of skrapr targets.
-        /// </summary>
-        /// <remarks>
-        /// A target is a definition of ...
-        /// </remarks>
-        [JsonProperty("targets")]
-        public IList<Target> Targets
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the collection of schedules. If no schedules are defined, the Skrapr will only execute manually.
         /// </summary>
         [JsonProperty("schedule", ItemConverterType = typeof(ScheduleConverter), DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         [DefaultValue(null)]
         public IList<ISchedule> Schedule
+        {
+            get;
+            set;
+        }
+
+        [JsonExtensionData]
+        public IDictionary<string, JToken> AdditionalData
         {
             get;
             set;

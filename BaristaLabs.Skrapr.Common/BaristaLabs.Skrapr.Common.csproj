@@ -78,17 +78,24 @@
     <Compile Include="Converters\AuthenticatorConverter.cs" />
     <Compile Include="Converters\PropertyPluckrConverter.cs" />
     <Compile Include="Converters\ScheduleConverter.cs" />
-    <Compile Include="Converters\SkraprConverter.cs" />
+    <Compile Include="Converters\TargetConverter.cs" />
     <Compile Include="DomainModel\Authenticator.cs" />
+    <Compile Include="DomainModel\BlobTarget.cs" />
     <Compile Include="DomainModel\IAuthenticator.cs" />
     <Compile Include="DomainModel\ISchedule.cs" />
-    <Compile Include="DomainModel\ISkrapr.cs" />
     <Compile Include="DomainModel\Project.cs" />
+    <Compile Include="DomainModel\ProjectStatus.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DomainModel\PropertyPluckr.cs" />
+    <Compile Include="DomainModel\RssTarget.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DomainModel\Schedule.cs" />
-    <Compile Include="DomainModel\SkraprBase.cs" />
-    <Compile Include="DomainModel\WebSkrapr.cs" />
-    <Compile Include="DomainModel\Target.cs" />
+    <Compile Include="DomainModel\TargetBase.cs" />
+    <Compile Include="DomainModel\Skrapr.cs" />
+    <Compile Include="DomainModel\TargetStatus.cs" />
+    <Compile Include="DomainModel\WebTarget.cs" />
     <Compile Include="DomainModel\PropertyValueType.cs" />
     <Compile Include="DomainModel\IPropertyPluckr.cs" />
     <Compile Include="EntitySchemes\JsonNetEntityIdMember.cs" />
@@ -97,6 +104,7 @@
     <Compile Include="DomainModel\TargetPattern.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Repository_Projects.cs" />
+    <Compile Include="Repository_Skraprs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="job_scheduling_data_2_0.xsd">

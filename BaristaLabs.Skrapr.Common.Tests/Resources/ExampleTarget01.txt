@@ -1,11 +1,6 @@
 {
-  "name": "Front Page Weather",
-  "description": "Gets the weather information from the front page.",
-  "pattern": {
-    "url": "http://www.weather.com/weather/today/\\d{5}",
-    "mimeType": "text/html"
-  },
-  "type": "Weather",
+  "type": "web",
+  "resultType": "Weather",
   "requireJQuery": true,
   "properties": {
     "source": {
@@ -32,5 +27,13 @@
       "script": "jQuery('ul.nav-list li a').text();",
       "transform": "function(result) {\r\n    return result\r\n}"
     }
+  },
+  "_id": null,
+  "skraprId": "ExampleSkrapr01",
+  "name": "Front Page Weather",
+  "description": "Gets the weather information from the front page.",
+  "pattern": {
+    "url": "http://www.weather.com/weather/today/\\d{5}",
+    "mimeType": "text/html"
   }
 }

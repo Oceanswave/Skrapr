@@ -1,6 +1,8 @@
 ﻿namespace BaristaLabs.Skrapr.Common.DomainModel
 {
+    using System.Collections.Generic;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using Quartz;
 
     public abstract class Schedule : ISchedule
@@ -12,6 +14,13 @@
         public abstract string Type
         {
             get;
+        }
+
+        [JsonExtensionData]
+        public IDictionary<string, JToken> AdditionalData
+        {
+            get;
+            set;
         }
     }
 
