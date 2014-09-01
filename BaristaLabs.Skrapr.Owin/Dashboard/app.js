@@ -1,4 +1,4 @@
-﻿angular.module('ngSkraprDashboard', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router', 'auth0'])
+﻿angular.module('ngSkraprDashboard', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router', 'auth0', 'angularSpinner'])
     .config([
         '$urlRouterProvider', '$stateProvider', 'authProvider', '$httpProvider',
         function($urlRouterProvider, $stateProvider, authProvider, $httpProvider) {

@@ -405,6 +405,7 @@
     <Content Include="Components\angular-bootstrap\ui-bootstrap-tpls-0.11.0.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Components\angular-spinner.js" />
     <Content Include="Components\angular-ui-router\angular-ui-router.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -2050,6 +2051,7 @@
     <Content Include="Components\modernizr\modernizr.custom.56232.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Components\spin.js" />
     <Content Include="Components\ui-ace\ui-ace.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -1,7 +1,13 @@
 ﻿<div>
-    <div class="dashboard-header">{{project.name}}</div>
-    List of skraprs
-    add skrapr
-    skrapr triggers
-    yada yada
+    <span data-ng-if="model.isLoading" data-us-spinner="{radius:30, width:8, length: 16}"></span>
+    <div data-ng-if="!model.isLoading">
+        <div class="dashboard-header">{{project.name}}</div>
+        <div>
+
+        </div>
+        List of skraprs
+        add skrapr
+        skrapr triggers
+        yada yada
+    </div>
 </div>

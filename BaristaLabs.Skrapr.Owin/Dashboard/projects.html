@@ -3,32 +3,35 @@
     <div data-tabset="">
         <div data-tab="" data-heading="Your Projects">
             <div style="padding: 10px;">
-                <div class="btn btn-primary" data-ng-click="addNewProject()"><i class="fa fa-plus"></i>&nbsp;Add New Project</div>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Description
-                            </th>
-                            <th>
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-ng-if="model.isLoading == false && projects.length == 0">
-                            <td column-span="2"><i>No projects exist, please create one.</i></td>
-                        </tr>
-                        <tr data-ng-repeat="project in projects">
-                            <td><a class="btn btn-link" data-ui-sref="ProjectDetails({projectId: project.Id})">{{project.name}}</a></td>
-                            <td>{{project.description}}</td>
-                            <td>??</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <span data-ng-if="model.isLoading" data-us-spinner="{radius:30, width:8, length: 16}"></span>
+                <div data-ng-if="!model.isLoading">
+                    <div class="btn btn-primary" data-ng-click="addNewProject()"><i class="fa fa-plus"></i>&nbsp;Add New Project</div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-if="model.isLoading == false && projects.length == 0">
+                                <td column-span="2"><i>No projects exist, please create one.</i></td>
+                            </tr>
+                            <tr data-ng-repeat="project in projects">
+                                <td><a class="btn btn-link" data-ui-sref="ProjectDetails({projectId: project.Id})">{{project.name}}</a></td>
+                                <td>{{project.description}}</td>
+                                <td>??</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

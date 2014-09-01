@@ -1,5 +1,5 @@
 ﻿///#source 1 1 /Dashboard/app.js
-angular.module('ngSkraprDashboard', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router', 'auth0'])
+angular.module('ngSkraprDashboard', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'ui.router', 'auth0', 'angularSpinner'])
     .config([
         '$urlRouterProvider', '$stateProvider', 'authProvider', '$httpProvider',
         function($urlRouterProvider, $stateProvider, authProvider, $httpProvider) {
@@ -157,15 +157,22 @@ angular.module('ngSkraprDashboard')
         '$scope', '$http', '$modal', '$stateParams',
         function($scope, $http, $modal, $stateParams) {
             $scope.project = null;
+            $scope.model = {
+                isLoading: true
+            };
 
-            $scope.getProjectDetails = function(projectId) {
+            $scope.getProjectDetails = function (projectId) {
+                $scope.model.isLoading = true;
+
                 $http({
                     method: "GET",
                     url: "/API/Projects/" + projectId
                 }).success(function(data) {
                     $scope.project = data;
+                    $scope.model.isLoading = false;
                 }).error(function(data) {
                     $scope.project = null;
+                    $scope.model.isLoading = false;
                 });
             };
 
