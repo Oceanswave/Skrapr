@@ -174,3 +174,13 @@ angular.module('ngSkraprDashboard')
     ]);
 
 
+///#source 1 1 /Dashboard/activeTasksCtrl.js
+angular.module('ngSkraprDashboard')
+    .controller('ActiveTasksCtrl', [
+        '$scope', '$http', '$modal', '$stateParams',
+        function($scope, $http, $modal, $stateParams) {
+            
+        }
+    ]);
+
+

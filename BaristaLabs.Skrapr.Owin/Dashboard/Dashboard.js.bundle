@@ -14,5 +14,6 @@
     <file>/Dashboard/dashboardCtrl.js</file>
     <file>/Dashboard/projectsCtrl.js</file>
     <file>/Dashboard/projectDetailsCtrl.js</file>
+    <file>/Dashboard/activeTasksCtrl.js</file>
   </files>
 </bundle>
