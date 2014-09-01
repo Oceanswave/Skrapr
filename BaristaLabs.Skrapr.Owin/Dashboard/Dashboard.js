@@ -65,7 +65,7 @@ angular.module('ngSkraprDashboard', ['ngSanitize', 'ngRoute', 'ui.bootstrap', 'u
     ]);
 ///#source 1 1 /Dashboard/dashboardCtrl.js
 angular.module('ngSkraprDashboard')
-.controller('DashboardCtrl', ['$scope', 'auth', function ($scope, auth) {
+.controller('DashboardCtrl', ['$scope', '$window', 'auth', function ($scope, $window, auth) {
     $scope.auth = auth;
     $scope.model = {
         isMinimized: false
