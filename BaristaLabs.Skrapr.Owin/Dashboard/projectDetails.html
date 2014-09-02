@@ -2,12 +2,37 @@
     <span data-ng-if="model.isLoading" data-us-spinner="{top: '200px', radius:30, width:8, length: 16}"></span>
     <div data-ng-if="!model.isLoading">
         <div class="dashboard-header">{{project.name}}</div>
-        <div>
-
+        <div class="btn btn-primary" data-ng-click="addNewSkrapr()"><i class="fa fa-plus"></i>&nbsp;Add New Skrapr</div>
+        <div data-ng-if="model.isLoading == false && skraprs.length == 0">
+            <i>No projects exist, please create one.</i>
         </div>
-        List of skraprs
-        add skrapr
-        skrapr triggers
-        yada yada
+        <div data-ng-if="model.isLoading == false && skraprs.length > 0" data-tabset="">
+            <div data-tab="" ng-repeat="skrapr in skraprs" heading="{{skrapr.name}}">
+                <div class="btn btn-warning pull-right">Delete</div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script id="new-skrapr-tmpl.html" type="text/ng-template">
+    <div class="modal-header">
+        <h4 style="font-weight: bold;">Add New Skrapr</h4>
+    </div>
+    <div class="modal-body">
+        <form name="form" role="form" novalidate>
+            <div class="form-group has-feedback">
+                <label for="projectTitle">Skrapr Name</label>
+                <input type="text" class="form-control" id="projectTitle" placeholder="Enter a skrapr name." required data-ng-model="skrapr.name">
+                <span class="fa fa-check form-control-feedback"></span>
+            </div>
+            <div class="form-group">
+                <label for="projectDescription">Skrapr Description</label>
+                <textarea class="form-control" id="projectDescription" placeholder="Skrapr Description" data-ng-model="skrapr.description"></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()" data-ng-disabled="form.$invalid">OK</button>
+        <button class="btn btn-warning" ng-click="$dismiss()">Cancel</button>
+    </div>
+</script>

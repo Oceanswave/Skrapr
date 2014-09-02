@@ -13,9 +13,20 @@
                     templateUrl: 'new-project-tmpl.html',
                     controller: "NewProjectCtrl"
                 }).result.then(function(project) {
-                    $state.go("ProjectDetails", { projectId: project.Id });
+                    $state.go("ProjectDetails", { projectId: project._id });
                 });
             };
+
+            $scope.deleteProject = function (projectId) {
+                $scope.model.isLoading = true;
+
+                $http({
+                    method: "DELETE",
+                    url: "/API/Projects/" + projectId
+                }).then(function() {
+                    $scope.listProjects();
+                });
+            }
 
             $scope.listProjects = function () {
                 $scope.model.isLoading = true;

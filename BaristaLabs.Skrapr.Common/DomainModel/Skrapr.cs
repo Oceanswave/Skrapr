@@ -1,5 +1,6 @@
 ﻿namespace BaristaLabs.Skrapr.Common.DomainModel
 {
+    using System;
     using BaristaLabs.Skrapr.Common.Converters;
     using Newtonsoft.Json;
     using System.Collections.Generic;
@@ -29,7 +30,7 @@
         /// <summary>
         /// Gets or sets the id of the project that the skrapr is associated with.
         /// </summary>
-        [JsonProperty("projectId", Required = Required.Always)]
+        [JsonProperty("projectId")]
         public string ProjectId
         {
             get;
@@ -167,6 +168,26 @@
         [JsonProperty("schedule", ItemConverterType = typeof(ScheduleConverter), DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         [DefaultValue(null)]
         public IList<ISchedule> Schedule
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates when the Skrapr was created.
+        /// </summary>
+        [JsonProperty("createdOn")]
+        public DateTime? CreatedOn
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value that indicates when the Skrapr was last updated.
+        /// </summary>
+        [JsonProperty("lastUpdated")]
+        public DateTime? LastUpdated
         {
             get;
             set;

@@ -22,12 +22,12 @@
                         </thead>
                         <tbody>
                             <tr data-ng-if="model.isLoading == false && projects.length == 0">
-                                <td column-span="2"><i>No projects exist, please create one.</i></td>
+                                <td colspan="2"><i>No projects exist, please create one.</i></td>
                             </tr>
                             <tr data-ng-repeat="project in projects">
                                 <td><a class="btn btn-link" data-ui-sref="ProjectDetails({projectId: project.Id})">{{project.name}}</a></td>
                                 <td>{{project.description}}</td>
-                                <td>??</td>
+                                <td><div class="btn btn-danger" data-ng-click="deleteProject(project.Id)"><i class="fa fa-recycle fa-lg"></i></div></td>
                             </tr>
                         </tbody>
                     </table>

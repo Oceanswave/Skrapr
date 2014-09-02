@@ -10,7 +10,8 @@
     /// Represents a skrapr target.
     /// </summary>
     /// <remarks>
-    /// Various skraprs use different types of targets, for instance, the webskrapr uses a webtarget, while an rssreader uses a rsstarget.
+    /// A skrapr may contain a number of types of targets. For instance, a website would be crawled via a webtarget,
+    /// while crawling a rssreader would use a rsstarget.
     /// 
     /// These differing kinds of targets have different semantics surrounding how they must be skraped.
     /// 

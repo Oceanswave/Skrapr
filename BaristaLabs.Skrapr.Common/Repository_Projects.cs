@@ -18,21 +18,10 @@
                     .Key(userId)
                     .Reduce(false));
 
-                var existingCardResponse =
+                var projectsResponse =
                     await store.Client.Views.QueryAsync<Project>(query);
 
-                return existingCardResponse.Rows.Select(r => r.Value).ToList();
-            }
-        }
-
-        public static async Task<bool> ProjectExistsAsync(string accountId, string projectId)
-        {
-            using (var store = new MyCouchStore(GetDbClient()))
-            {
-                var existingCardResponse =
-                    await store.ExistsAsync(projectId);
-
-                return existingCardResponse;
+                return projectsResponse.Rows.Select(r => r.Value).ToList();
             }
         }
 
@@ -40,7 +29,23 @@
         {
             using (var store = new MyCouchStore(GetDbClient()))
             {
-                return await store.GetByIdAsync<Project>(projectId);
+                var result =  await store.GetByIdAsync<Project>(projectId);
+                return result.UserId != userId
+                    ? null
+                    : result;
+            }
+        }
+
+        public static async Task<bool> DeleteProjectAsync(string userId, string projectId)
+        {
+            using (var store = new MyCouchStore(GetDbClient()))
+            {
+                var project = await GetProjectAsync(userId, projectId);
+
+                if (project == null)
+                    return false;
+
+                return await store.DeleteAsync(projectId);
             }
         }
 

@@ -72,6 +72,9 @@
             set;
         }
 
+        /// <summary>
+        /// Gets or sets a value that indicates when the project was created.
+        /// </summary>
         [JsonProperty("createdOn")]
         public DateTime? CreatedOn
         {
@@ -79,6 +82,9 @@
             set;
         }
 
+        /// <summary>
+        /// Gets or sets a value that indicates when the project was last updated.
+        /// </summary>
         [JsonProperty("lastUpdated")]
         public DateTime? LastUpdated
         {
